@@ -62,12 +62,14 @@ class AWSBatchJob:
         if self.envs:
             overrides["environment"] = [{"name": k, "value": str(v)} for k, v in self.envs.items()]
 
-        # Works for many job defs; some Fargate setups use resourceRequirements instead.
+        # FARGATE: use resourceRequirements (NOT vcpus/memory)
+        rr = []
         if self.vcpu_override is not None:
-            overrides["vcpus"] = int(self.vcpu_override)
-
+            rr.append({"type": "VCPU", "value": str(int(self.vcpu_override))})
         if self.memory_override_mb is not None:
-            overrides["memory"] = int(self.memory_override_mb)
+            rr.append({"type": "MEMORY", "value": str(int(self.memory_override_mb))})
+        if rr:
+            overrides["resourceRequirements"] = rr
 
         return overrides
 

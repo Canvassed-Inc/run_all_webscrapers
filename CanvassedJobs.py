@@ -16,6 +16,15 @@ colliers = AWSBatchJob(
     memory_override_mb=16384,
 )
 
+coldwell = AWSBatchJob(
+    job_definition="scraper_definition",
+    job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
+    job_name="Coldwell",
+    override_command=["python", "coldwell_commercial.py"],
+    vcpu_override=8,
+    memory_override_mb=32768,
+)
+
 run_all = AWSBatchJob(
     job_definition="scraper_definition",
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/webscraper_queue",
@@ -26,4 +35,4 @@ run_all = AWSBatchJob(
 
 class CanvassedJobs:
     def __init__(self):
-        self.jobs_list = [kidder_matthews]
+        self.jobs_list = [run_all, colliers, kidder_matthews, coldwell]
