@@ -2,9 +2,12 @@ from AWSBatchJob import AWSBatchJob
 
 
 kidder_matthews = AWSBatchJob(
-    job_definition="kidder_matthews",
+    job_definition="scraper_definition",
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
-    job_name="Kidder_Matthews",
+    job_name="Kidder Matthews",
+    override_command=["python", "kidder_matthews.py"],
+    vcpu_override=8,
+    memory_override_mb=32768,
 )
 
 colliers = AWSBatchJob(
@@ -25,6 +28,24 @@ coldwell = AWSBatchJob(
     memory_override_mb=32768,
 )
 
+cbre = AWSBatchJob(
+    job_definition="scraper_definition",
+    job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
+    job_name="CBRE",
+    override_command=["python","/app/Requests/cbre_requests.py"],
+    vcpu_override=4,
+    memory_override_mb=32768,
+)
+
+cw = AWSBatchJob(
+    job_definition="scraper_definition",
+    job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
+    job_name="Cushman",
+    override_command=["python","/app/Requests/cushman_and_wakefield/cw.py"],
+    vcpu_override=4,
+    memory_override_mb=32768,
+)
+
 run_all = AWSBatchJob(
     job_definition="scraper_definition",
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/webscraper_queue",
@@ -35,4 +56,9 @@ run_all = AWSBatchJob(
 
 class CanvassedJobs:
     def __init__(self):
-        self.jobs_list = [run_all, colliers, kidder_matthews, coldwell]
+        self.jobs_list = [run_all,
+                          colliers,
+                          cbre,
+                          cw,
+                          kidder_matthews,
+                          coldwell]
