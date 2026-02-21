@@ -4,7 +4,7 @@ from AWSBatchJob import AWSBatchJob
 kidder_matthews = AWSBatchJob(
     job_definition="scraper_definition",
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
-    job_name="Kidder Matthews",
+    job_name="Kidder_Matthews",
     override_command=["python", "kidder_matthews.py"],
     vcpu_override=8,
     memory_override_mb=32768,
@@ -34,7 +34,7 @@ cbre = AWSBatchJob(
     job_name="CBRE",
     override_command=["python","/app/Requests/cbre_requests.py"],
     vcpu_override=4,
-    memory_override_mb=32768,
+    memory_override_mb=30720,
 )
 
 cw = AWSBatchJob(
@@ -43,7 +43,7 @@ cw = AWSBatchJob(
     job_name="Cushman",
     override_command=["python","/app/Requests/cushman_and_wakefield/cw.py"],
     vcpu_override=4,
-    memory_override_mb=32768,
+    memory_override_mb=30720,
 )
 
 run_all = AWSBatchJob(
@@ -61,4 +61,5 @@ class CanvassedJobs:
                           cbre,
                           cw,
                           kidder_matthews,
-                          coldwell]
+                          coldwell
+                          ]
