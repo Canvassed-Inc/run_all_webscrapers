@@ -1,5 +1,8 @@
 from AWSBatchJob import AWSBatchJob
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 kidder_matthews = AWSBatchJob(
     job_definition="scraper_definition",
@@ -51,7 +54,10 @@ run_all = AWSBatchJob(
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/webscraper_queue",
     job_name="Run_All",
     override_command=["python", "dispatch.py"],
-    array_size=600
+    array_size=600,
+    envs={
+        "APISCRAPER_API_KEY": os.getenv("APISCRAPER_API_KEY")
+    }
 )
 
 class CanvassedJobs:
