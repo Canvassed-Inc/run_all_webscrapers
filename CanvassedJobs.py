@@ -49,6 +49,15 @@ cw = AWSBatchJob(
     memory_override_mb=30720,
 )
 
+mackenzie = AWSBatchJob(
+    job_definition="scraper_definition",
+    job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
+    job_name="Mackenzie",
+    override_command=["python","Mackenzie.py"],
+    vcpu_override=4,
+    memory_override_mb=30720,
+)
+
 run_all = AWSBatchJob(
     job_definition="scraper_definition",
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/webscraper_queue",
@@ -67,5 +76,6 @@ class CanvassedJobs:
                           cbre,
                           cw,
                           kidder_matthews,
-                          coldwell
+                          coldwell,
+                          mackenzie
                           ]
