@@ -1,10 +1,16 @@
 from AWSBatchJob import AWSBatchJob
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 kidder_matthews = AWSBatchJob(
-    job_definition="kidder_matthews",
+    job_definition="scraper_definition",
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
     job_name="Kidder_Matthews",
+    override_command=["python", "kidder_matthews.py"],
+    vcpu_override=8,
+    memory_override_mb=32768,
 )
 
 colliers = AWSBatchJob(
@@ -25,14 +31,51 @@ coldwell = AWSBatchJob(
     memory_override_mb=32768,
 )
 
+cbre = AWSBatchJob(
+    job_definition="scraper_definition",
+    job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
+    job_name="CBRE",
+    override_command=["python","/app/Requests/cbre_requests.py"],
+    vcpu_override=4,
+    memory_override_mb=30720,
+)
+
+cw = AWSBatchJob(
+    job_definition="scraper_definition",
+    job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
+    job_name="Cushman",
+    override_command=["python","/app/Requests/cushman_and_wakefield/cw.py"],
+    vcpu_override=4,
+    memory_override_mb=30720,
+)
+
+mackenzie = AWSBatchJob(
+    job_definition="scraper_definition",
+    job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
+    job_name="Mackenzie",
+    override_command=["python","Mackenzie.py"],
+    vcpu_override=4,
+    memory_override_mb=30720,
+)
+
 run_all = AWSBatchJob(
     job_definition="scraper_definition",
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/webscraper_queue",
     job_name="Run_All",
     override_command=["python", "dispatch.py"],
-    array_size=600
+    array_size=600,
+    envs={
+        "APISCRAPER_API_KEY": os.getenv("APISCRAPER_API_KEY")
+    }
 )
 
 class CanvassedJobs:
     def __init__(self):
-        self.jobs_list = [run_all, colliers, kidder_matthews, coldwell]
+        self.jobs_list = [run_all,
+                          colliers,
+                          cbre,
+                          cw,
+                          kidder_matthews,
+                          coldwell,
+                          mackenzie
+                          ]
