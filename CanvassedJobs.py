@@ -44,7 +44,7 @@ cw = AWSBatchJob(
     job_definition="scraper_definition",
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
     job_name="Cushman",
-    override_command=["python","/app/Requests/cushman_and_wakefield/cw.py"],
+    override_command=["python","/app/Requests/cushman_v2.py"],
     vcpu_override=4,
     memory_override_mb=30720,
 )
