@@ -45,8 +45,8 @@ cw = AWSBatchJob(
     job_queue="arn:aws:batch:us-east-1:362644105056:job-queue/fargate_on_demand_queue",
     job_name="Cushman",
     override_command=["python","/app/Requests/cushman_v2.py"],
-    vcpu_override=4,
-    memory_override_mb=30720,
+    vcpu_override=8,
+    memory_override_mb=32768,
 )
 
 mackenzie = AWSBatchJob(
